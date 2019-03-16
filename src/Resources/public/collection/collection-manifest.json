@@ -1,0 +1,67 @@
+{
+  "components": [
+    {
+      "tag": "runopencode-date-range-type",
+      "dependencies": [],
+      "componentClass": "DateRangeType",
+      "componentPath": "components/date-range-type/date-range-type.js",
+      "styles": {
+        "$": {
+          "stylePaths": [
+            "components/date-range-type/date-range-type.scss"
+          ]
+        }
+      },
+      "props": [
+        {
+          "name": "footer",
+          "type": "Boolean",
+          "attr": "footer"
+        },
+        {
+          "name": "format",
+          "type": "String",
+          "attr": "format"
+        },
+        {
+          "name": "maxDate",
+          "attr": "max-date"
+        },
+        {
+          "name": "maxDays",
+          "type": "Number",
+          "attr": "max-days"
+        },
+        {
+          "name": "minDate",
+          "attr": "min-date"
+        },
+        {
+          "name": "minDays",
+          "type": "Number",
+          "attr": "min-days"
+        },
+        {
+          "name": "numberOfColumns",
+          "type": "Number",
+          "attr": "number-of-columns"
+        },
+        {
+          "name": "numberOfMonths",
+          "type": "Number",
+          "attr": "number-of-months"
+        }
+      ],
+      "hostElement": {
+        "name": "el"
+      }
+    }
+  ],
+  "collections": [],
+  "compiler": {
+    "name": "@stencil/core",
+    "version": "0.16.2",
+    "typescriptVersion": "3.2.2"
+  },
+  "bundles": []
+}

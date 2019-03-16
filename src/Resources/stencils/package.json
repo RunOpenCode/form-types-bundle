@@ -1,0 +1,28 @@
+{
+    "name": "@runopencode/symfony-form-types",
+    "version": "0.0.1",
+    "description": "Collection of symfony form types",
+    "module": "../public/esm/index.js",
+    "main": "../public/index.js",
+    "unpkg": "../public/ionic.js",
+    "types": "../public/types/components.d.ts",
+    "collection": "../public/collection/collection-manifest.json",
+    "files": [
+        "../public/"
+    ],
+    "scripts": {
+        "build": "stencil build --docs",
+        "start": "stencil build --dev --watch --serve",
+        "test": "stencil test --spec --e2e",
+        "test.watch": "stencil test --spec --e2e --watchAll"
+    },
+    "dependencies": {
+        "lightpick": "^1.2.11",
+        "moment": "^2.24.0"
+    },
+    "devDependencies": {
+        "@stencil/core": "~0.16.2",
+        "@stencil/sass": "^0.1.1"
+    },
+    "license": "MIT"
+}

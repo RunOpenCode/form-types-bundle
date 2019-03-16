@@ -1,0 +1,2 @@
+// runopencode: Host Data, ES Module/es2017 Target
+export const COMPONENTS = [["runopencode-date-range-type","nsn0akbd",1,[["el",64],["footer",1,0,1,4],["format",1,0,1,2],["maxDate",1],["maxDays",1,0,"max-days",8],["minDate",1],["minDays",1,0,"min-days",8],["numberOfColumns",1,0,"number-of-columns",8],["numberOfMonths",1,0,"number-of-months",8]]]]

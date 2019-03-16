@@ -1,0 +1,3 @@
+src/Resources/stencils/.stencil
+src/Resources/stencils/node_modules
+vendor/*

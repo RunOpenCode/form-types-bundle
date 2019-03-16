@@ -1,0 +1,1 @@
+// runopencode: CommonJS Main
