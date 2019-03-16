@@ -1,6 +1,6 @@
 {
     "name": "runopencode/form-types-bundle",
-    "description": "A collection of commonly used form types and extensions",
+    "description": "A collection of commonly used form types and extensions.",
     "license": "MIT",
     "authors": [
         {
@@ -19,5 +19,5 @@
         "psr-4": {
             "RunOpenCode\\FormTypes\\": "src/"
         }
-    },
+    }
 }
