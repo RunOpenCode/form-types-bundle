@@ -311,3 +311,5 @@
     color: #fff;
     background-color: #2495f3;
 }
+runopencode-date-type.bootstrap4 .input-group-text {
+  cursor: pointer; }

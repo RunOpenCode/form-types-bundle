@@ -9,16 +9,22 @@ import { Moment }                   from '../../typings/moment';
 })
 export class DateRangeType {
 
-    @Prop({ mutable: false })
+    @Prop()
+    public format: string = 'DD/MM/YYYY';
+
+    @Prop()
     public numberOfMonths: number = 2;
 
-    @Prop({ mutable: false })
-    public numberOfColumns: number = 2;
+    @Prop()
+    public buttons: boolean = false;
 
-    @Prop({ mutable: false })
+    @Prop()
+    public disableWeekends: boolean = false;
+
+    @Prop()
     public minDate: Moment | String | Number | Date = null;
 
-    @Prop({ mutable: false })
+    @Prop()
     public maxDate: Moment | String | Number | Date = null;
 
     @Prop()
@@ -28,33 +34,52 @@ export class DateRangeType {
     public maxDays: number | null = null;
 
     @Prop()
-    public footer: boolean = true;
+    public disabled: boolean = false;
 
     @Prop()
-    public format: string = 'DD/MM/YYYY';
+    public readonly: boolean = false;
+
+    @Prop()
+    public required: boolean = false
+
+    @Prop()
+    public inputClass: string = '';
 
     @Element()
     private el: HTMLElement;
 
     private picker: Lightpick;
 
+    private input: HTMLElement;
+
+    private cssClasses: string | null;
+
+    private cssStyle: string | null;
+
+    public componentWillLoad(): void {
+        this.cssClasses = this.el.getAttribute('class');
+        this.cssStyle   = this.el.getAttribute('style');
+    }
+
     public componentDidLoad(): void {
-        let input     = this.el.querySelector('input[type="text"]');
+        this.input    = this.el.querySelector('input[type="text"]');
         let from      = this.unserialize('from');
         let to        = this.unserialize('to');
         let serialize = this.serialize.bind(this);
 
         this.picker = new Lightpick({
-            field          : input,
+            field          : this.input,
             singleDate     : false,
             minDate        : this.minDate,
             maxDate        : this.maxDate,
             minDays        : this.minDays,
             maxDays        : this.maxDays,
-            footer         : this.footer,
+            footer         : this.buttons,
             format         : this.format,
             numberOfMonths : this.numberOfMonths,
-            numberOfColumns: this.numberOfColumns,
+            numberOfColumns: this.numberOfMonths,
+            hoveringTooltip: false,
+            disableWeekends: this.disableWeekends,
             onSelect       : (start: Moment, end: Moment) => {
                 serialize('from', start ? start.toDate() : null);
                 serialize('to', end ? end.toDate() : null);
@@ -64,16 +89,45 @@ export class DateRangeType {
         if (from || to) {
             this.picker.setDateRange(from, to);
         }
+
+        if (this.cssClasses) {
+
+            this.cssClasses.split(' ').forEach((cssClass: string) => {
+                this.el.classList.remove(cssClass);
+                this.input.classList.add(cssClass);
+            });
+        }
+
+        if (this.cssStyle) {
+            this.input.setAttribute('style', this.cssStyle);
+            this.el.setAttribute('style', this.cssStyle);
+        }
     }
 
     public componentDidUnload(): void {
+
+        if (this.cssClasses) {
+            this.el.className = this.cssClasses;
+        }
+
+        if (this.cssStyle) {
+            this.el.setAttribute('style', this.cssStyle);
+        }
+
         this.picker.destroy();
     }
 
     public render() {
         return [
             <div>
-                <input type="text"/>
+                <input type="text" class={this.inputClass} readonly={this.readonly} disabled={this.disabled}
+                       required={this.required}/>
+
+                {!this.required
+                    ? <span>Close</span>
+                    : ''
+                }
+
                 <div class="hidden" hidden>
                     <slot/>
                 </div>

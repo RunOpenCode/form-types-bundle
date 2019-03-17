@@ -14,14 +14,29 @@
       },
       "props": [
         {
-          "name": "footer",
+          "name": "buttons",
           "type": "Boolean",
-          "attr": "footer"
+          "attr": "buttons"
+        },
+        {
+          "name": "disabled",
+          "type": "Boolean",
+          "attr": "disabled"
+        },
+        {
+          "name": "disableWeekends",
+          "type": "Boolean",
+          "attr": "disable-weekends"
         },
         {
           "name": "format",
           "type": "String",
           "attr": "format"
+        },
+        {
+          "name": "inputClass",
+          "type": "String",
+          "attr": "input-class"
         },
         {
           "name": "maxDate",
@@ -42,19 +57,98 @@
           "attr": "min-days"
         },
         {
-          "name": "numberOfColumns",
-          "type": "Number",
-          "attr": "number-of-columns"
-        },
-        {
           "name": "numberOfMonths",
           "type": "Number",
           "attr": "number-of-months"
+        },
+        {
+          "name": "readonly",
+          "type": "Boolean",
+          "attr": "readonly"
+        },
+        {
+          "name": "required",
+          "type": "Boolean",
+          "attr": "required"
         }
       ],
       "hostElement": {
         "name": "el"
       }
+    },
+    {
+      "tag": "runopencode-date-type",
+      "dependencies": [],
+      "componentClass": "DateType",
+      "componentPath": "components/date-type/date-type.js",
+      "styles": {
+        "$": {
+          "stylePaths": [
+            "components/date-type/date-type.scss"
+          ]
+        }
+      },
+      "props": [
+        {
+          "name": "dateFormat",
+          "type": "String",
+          "attr": "date-format"
+        },
+        {
+          "name": "disabled",
+          "type": "Boolean",
+          "attr": "disabled"
+        },
+        {
+          "name": "disableWeekends",
+          "type": "Boolean",
+          "attr": "disable-weekends"
+        },
+        {
+          "name": "maxDate",
+          "attr": "max-date"
+        },
+        {
+          "name": "minDate",
+          "attr": "min-date"
+        },
+        {
+          "name": "placeholder",
+          "type": "String",
+          "attr": "placeholder"
+        },
+        {
+          "name": "readonly",
+          "type": "Boolean",
+          "attr": "readonly"
+        },
+        {
+          "name": "required",
+          "type": "Boolean",
+          "attr": "required"
+        },
+        {
+          "name": "theme",
+          "type": "String",
+          "attr": "theme"
+        }
+      ],
+      "methods": [
+        {
+          "name": "getValue"
+        },
+        {
+          "name": "setValue"
+        }
+      ],
+      "hostElement": {
+        "name": "el"
+      },
+      "events": [
+        {
+          "event": "change"
+        }
+      ]
     }
   ],
   "collections": [],

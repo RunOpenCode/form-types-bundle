@@ -16,34 +16,70 @@ import {
 export namespace Components {
 
   interface RunopencodeDateRangeType {
-    'footer': boolean;
+    'buttons': boolean;
+    'disableWeekends': boolean;
+    'disabled': boolean;
     'format': string;
+    'inputClass': string;
     'maxDate': Moment | String | Number | Date;
     'maxDays': number | null;
     'minDate': Moment | String | Number | Date;
     'minDays': number | null;
-    'numberOfColumns': number;
     'numberOfMonths': number;
+    'readonly': boolean;
+    'required': boolean;
   }
   interface RunopencodeDateRangeTypeAttributes extends StencilHTMLAttributes {
-    'footer'?: boolean;
+    'buttons'?: boolean;
+    'disableWeekends'?: boolean;
+    'disabled'?: boolean;
     'format'?: string;
+    'inputClass'?: string;
     'maxDate'?: Moment | String | Number | Date;
     'maxDays'?: number | null;
     'minDate'?: Moment | String | Number | Date;
     'minDays'?: number | null;
-    'numberOfColumns'?: number;
     'numberOfMonths'?: number;
+    'readonly'?: boolean;
+    'required'?: boolean;
+  }
+
+  interface RunopencodeDateType {
+    'dateFormat': string;
+    'disableWeekends': boolean;
+    'disabled': boolean;
+    'getValue': () => Promise<Date>;
+    'maxDate': Moment | String | Number | Date;
+    'minDate': Moment | String | Number | Date;
+    'placeholder': string;
+    'readonly': boolean;
+    'required': boolean;
+    'setValue': (date: Date) => Promise<void>;
+    'theme': string;
+  }
+  interface RunopencodeDateTypeAttributes extends StencilHTMLAttributes {
+    'dateFormat'?: string;
+    'disableWeekends'?: boolean;
+    'disabled'?: boolean;
+    'maxDate'?: Moment | String | Number | Date;
+    'minDate'?: Moment | String | Number | Date;
+    'onChange'?: (event: CustomEvent) => void;
+    'placeholder'?: string;
+    'readonly'?: boolean;
+    'required'?: boolean;
+    'theme'?: string;
   }
 }
 
 declare global {
   interface StencilElementInterfaces {
     'RunopencodeDateRangeType': Components.RunopencodeDateRangeType;
+    'RunopencodeDateType': Components.RunopencodeDateType;
   }
 
   interface StencilIntrinsicElements {
     'runopencode-date-range-type': Components.RunopencodeDateRangeTypeAttributes;
+    'runopencode-date-type': Components.RunopencodeDateTypeAttributes;
   }
 
 
@@ -53,12 +89,20 @@ declare global {
     new (): HTMLRunopencodeDateRangeTypeElement;
   };
 
+  interface HTMLRunopencodeDateTypeElement extends Components.RunopencodeDateType, HTMLStencilElement {}
+  var HTMLRunopencodeDateTypeElement: {
+    prototype: HTMLRunopencodeDateTypeElement;
+    new (): HTMLRunopencodeDateTypeElement;
+  };
+
   interface HTMLElementTagNameMap {
     'runopencode-date-range-type': HTMLRunopencodeDateRangeTypeElement
+    'runopencode-date-type': HTMLRunopencodeDateTypeElement
   }
 
   interface ElementTagNameMap {
     'runopencode-date-range-type': HTMLRunopencodeDateRangeTypeElement;
+    'runopencode-date-type': HTMLRunopencodeDateTypeElement;
   }
 
 

@@ -1,0 +1,12 @@
+{% block runopencode_date_type_widget %}
+
+    <runopencode-date-type
+        {% for key, value in form.vars.configuration %}
+            {{ key }}="{{ value }}"
+        {% endfor %}
+        {{ block('widget_attributes') }}
+    >
+        {{ form_widget(form) }}
+    </runopencode-date-type>
+
+{% endblock runopencode_date_type_widget %}

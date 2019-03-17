@@ -1,31 +1,41 @@
 import Lightpick from 'lightpick';
 export class DateRangeType {
     constructor() {
+        this.format = 'DD/MM/YYYY';
         this.numberOfMonths = 2;
-        this.numberOfColumns = 2;
+        this.buttons = false;
+        this.disableWeekends = false;
         this.minDate = null;
         this.maxDate = null;
         this.minDays = null;
         this.maxDays = null;
-        this.footer = true;
-        this.format = 'DD/MM/YYYY';
+        this.disabled = false;
+        this.readonly = false;
+        this.required = false;
+        this.inputClass = '';
+    }
+    componentWillLoad() {
+        this.cssClasses = this.el.getAttribute('class');
+        this.cssStyle = this.el.getAttribute('style');
     }
     componentDidLoad() {
-        let input = this.el.querySelector('input[type="text"]');
+        this.input = this.el.querySelector('input[type="text"]');
         let from = this.unserialize('from');
         let to = this.unserialize('to');
         let serialize = this.serialize.bind(this);
         this.picker = new Lightpick({
-            field: input,
+            field: this.input,
             singleDate: false,
             minDate: this.minDate,
             maxDate: this.maxDate,
             minDays: this.minDays,
             maxDays: this.maxDays,
-            footer: this.footer,
+            footer: this.buttons,
             format: this.format,
             numberOfMonths: this.numberOfMonths,
-            numberOfColumns: this.numberOfColumns,
+            numberOfColumns: this.numberOfMonths,
+            hoveringTooltip: false,
+            disableWeekends: this.disableWeekends,
             onSelect: (start, end) => {
                 serialize('from', start ? start.toDate() : null);
                 serialize('to', end ? end.toDate() : null);
@@ -34,14 +44,33 @@ export class DateRangeType {
         if (from || to) {
             this.picker.setDateRange(from, to);
         }
+        if (this.cssClasses) {
+            this.cssClasses.split(' ').forEach((cssClass) => {
+                this.el.classList.remove(cssClass);
+                this.input.classList.add(cssClass);
+            });
+        }
+        if (this.cssStyle) {
+            this.input.setAttribute('style', this.cssStyle);
+            this.el.setAttribute('style', this.cssStyle);
+        }
     }
     componentDidUnload() {
+        if (this.cssClasses) {
+            this.el.className = this.cssClasses;
+        }
+        if (this.cssStyle) {
+            this.el.setAttribute('style', this.cssStyle);
+        }
         this.picker.destroy();
     }
     render() {
         return [
             h("div", null,
-                h("input", { type: "text" }),
+                h("input", { type: "text", class: this.inputClass, readonly: this.readonly, disabled: this.disabled, required: this.required }),
+                !this.required
+                    ? h("span", null, "Close")
+                    : '',
                 h("div", { class: "hidden", hidden: true },
                     h("slot", null))),
         ];
@@ -80,16 +109,28 @@ export class DateRangeType {
     }
     static get is() { return "runopencode-date-range-type"; }
     static get properties() { return {
+        "buttons": {
+            "type": Boolean,
+            "attr": "buttons"
+        },
+        "disabled": {
+            "type": Boolean,
+            "attr": "disabled"
+        },
+        "disableWeekends": {
+            "type": Boolean,
+            "attr": "disable-weekends"
+        },
         "el": {
             "elementRef": true
-        },
-        "footer": {
-            "type": Boolean,
-            "attr": "footer"
         },
         "format": {
             "type": String,
             "attr": "format"
+        },
+        "inputClass": {
+            "type": String,
+            "attr": "input-class"
         },
         "maxDate": {
             "type": "Any",
@@ -107,13 +148,17 @@ export class DateRangeType {
             "type": Number,
             "attr": "min-days"
         },
-        "numberOfColumns": {
-            "type": Number,
-            "attr": "number-of-columns"
-        },
         "numberOfMonths": {
             "type": Number,
             "attr": "number-of-months"
+        },
+        "readonly": {
+            "type": Boolean,
+            "attr": "readonly"
+        },
+        "required": {
+            "type": Boolean,
+            "attr": "required"
         }
     }; }
     static get style() { return "/**style-placeholder:runopencode-date-range-type:**/"; }

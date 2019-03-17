@@ -1,0 +1,11 @@
+@import "~lightpick/css/lightpick.css";
+
+runopencode-date-type {
+
+    &.bootstrap4 {
+        
+        .input-group-text {
+            cursor: pointer;
+        }
+    }
+}
