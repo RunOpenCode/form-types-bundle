@@ -13,6 +13,10 @@ export const config: Config = {
         }
     ],
     plugins      : [
-        sass(),
+        sass({
+            includePaths: [
+                'node_modules'
+            ]
+        }),
     ],
 };

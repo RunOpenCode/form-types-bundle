@@ -1,0 +1,12 @@
+{% block runopencode_choice_type_widget %}
+
+    <runopencode-choice-type
+        {% for key, value in form.vars.configuration %}
+            {{ key }}="{{ value }}"
+        {% endfor %}
+        {{ block('widget_attributes') }}
+    >
+        {{ form_widget(form) }}
+    </runopencode-choice-type>
+
+{% endblock runopencode_choice_type_widget %}

@@ -1,6 +1,52 @@
 {
   "components": [
     {
+      "tag": "runopencode-choice-type",
+      "dependencies": [],
+      "componentClass": "ChoiceType",
+      "componentPath": "components/choice-type/choice-type.js",
+      "styles": {
+        "$": {
+          "stylePaths": [
+            "components/choice-type/choice-type.scss"
+          ]
+        }
+      },
+      "props": [
+        {
+          "name": "display",
+          "type": "Number",
+          "attr": "display"
+        },
+        {
+          "name": "placeholder",
+          "type": "String",
+          "attr": "placeholder"
+        },
+        {
+          "name": "searchPlaceholder",
+          "type": "String",
+          "attr": "search-placeholder"
+        }
+      ],
+      "methods": [
+        {
+          "name": "getValue"
+        },
+        {
+          "name": "setValue"
+        }
+      ],
+      "hostElement": {
+        "name": "el"
+      },
+      "events": [
+        {
+          "event": "change"
+        }
+      ]
+    },
+    {
       "tag": "runopencode-date-range-type",
       "dependencies": [],
       "componentClass": "DateRangeType",

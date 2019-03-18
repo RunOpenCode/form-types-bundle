@@ -15,6 +15,20 @@ import {
 
 export namespace Components {
 
+  interface RunopencodeChoiceType {
+    'display': number | null;
+    'getValue': () => Promise<string | string[]>;
+    'placeholder': string | null;
+    'searchPlaceholder': string | null;
+    'setValue': (value: string | string[]) => Promise<void>;
+  }
+  interface RunopencodeChoiceTypeAttributes extends StencilHTMLAttributes {
+    'display'?: number | null;
+    'onChange'?: (event: CustomEvent) => void;
+    'placeholder'?: string | null;
+    'searchPlaceholder'?: string | null;
+  }
+
   interface RunopencodeDateRangeType {
     'dateFormat': string;
     'disableWeekends': boolean;
@@ -80,15 +94,23 @@ export namespace Components {
 
 declare global {
   interface StencilElementInterfaces {
+    'RunopencodeChoiceType': Components.RunopencodeChoiceType;
     'RunopencodeDateRangeType': Components.RunopencodeDateRangeType;
     'RunopencodeDateType': Components.RunopencodeDateType;
   }
 
   interface StencilIntrinsicElements {
+    'runopencode-choice-type': Components.RunopencodeChoiceTypeAttributes;
     'runopencode-date-range-type': Components.RunopencodeDateRangeTypeAttributes;
     'runopencode-date-type': Components.RunopencodeDateTypeAttributes;
   }
 
+
+  interface HTMLRunopencodeChoiceTypeElement extends Components.RunopencodeChoiceType, HTMLStencilElement {}
+  var HTMLRunopencodeChoiceTypeElement: {
+    prototype: HTMLRunopencodeChoiceTypeElement;
+    new (): HTMLRunopencodeChoiceTypeElement;
+  };
 
   interface HTMLRunopencodeDateRangeTypeElement extends Components.RunopencodeDateRangeType, HTMLStencilElement {}
   var HTMLRunopencodeDateRangeTypeElement: {
@@ -103,11 +125,13 @@ declare global {
   };
 
   interface HTMLElementTagNameMap {
+    'runopencode-choice-type': HTMLRunopencodeChoiceTypeElement
     'runopencode-date-range-type': HTMLRunopencodeDateRangeTypeElement
     'runopencode-date-type': HTMLRunopencodeDateTypeElement
   }
 
   interface ElementTagNameMap {
+    'runopencode-choice-type': HTMLRunopencodeChoiceTypeElement;
     'runopencode-date-range-type': HTMLRunopencodeDateRangeTypeElement;
     'runopencode-date-type': HTMLRunopencodeDateTypeElement;
   }

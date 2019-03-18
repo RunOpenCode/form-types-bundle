@@ -17,12 +17,14 @@
         "test.watch": "stencil test --spec --e2e --watchAll"
     },
     "dependencies": {
+        "choices.js": "^6.0.3",
         "lightpick": "^1.2.11",
         "moment": "^2.24.0"
     },
     "devDependencies": {
         "@stencil/core": "~0.16.2",
-        "@stencil/sass": "^0.1.1"
+        "@stencil/sass": "^0.1.1",
+        "@types/node-sass": "^4.11.0"
     },
     "license": "MIT"
 }

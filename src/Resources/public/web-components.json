@@ -1,6 +1,27 @@
 {
   "tags": [
     {
+      "label": "runopencode-choice-type",
+      "description": "",
+      "attributes": [
+        {
+          "label": "display",
+          "description": "",
+          "required": false
+        },
+        {
+          "label": "placeholder",
+          "description": "",
+          "required": false
+        },
+        {
+          "label": "search-placeholder",
+          "description": "",
+          "required": false
+        }
+      ]
+    },
+    {
       "label": "runopencode-date-range-type",
       "description": "",
       "attributes": [
