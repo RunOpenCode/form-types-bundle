@@ -1,27 +1,38 @@
-import '../../stencil.core';
+import { EventEmitter } from '../../stencil.core';
 import { Moment } from '../../typings/moment';
 export declare class DateRangeType {
-    format: string;
-    numberOfMonths: number;
-    buttons: boolean;
+    dateFormat: string;
+    theme: string;
     disableWeekends: boolean;
     minDate: Moment | String | Number | Date;
     maxDate: Moment | String | Number | Date;
-    minDays: number | null;
-    maxDays: number | null;
+    placeholder: string;
     disabled: boolean;
     readonly: boolean;
     required: boolean;
-    inputClass: string;
+    numberOfMonths: number;
+    minDays: number | null;
+    maxDays: number | null;
+    change: EventEmitter;
     private el;
     private picker;
     private input;
-    private cssClasses;
-    private cssStyle;
-    componentWillLoad(): void;
+    private readonly themes;
+    hostData(): {
+        'class': {
+            [x: string]: boolean;
+        };
+    };
     componentDidLoad(): void;
     componentDidUnload(): void;
-    render(): JSX.Element[];
-    private unserialize;
-    private serialize;
+    render(): any;
+    getValue(): Promise<[Date | null, Date | null]>;
+    getDateFrom(): Promise<Date | null>;
+    getDateTo(): Promise<Date | null>;
+    setValue(from: Date | null, to: Date | null): Promise<void>;
+    setDateFrom(from: Date | null): Promise<void>;
+    setDateTo(to: Date | null): Promise<void>;
+    private show;
+    private clear;
+    private renderBoostrap4Theme;
 }

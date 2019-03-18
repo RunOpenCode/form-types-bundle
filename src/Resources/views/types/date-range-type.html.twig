@@ -1,10 +1,10 @@
 {% block runopencode_date_range_type_widget %}
 
     <runopencode-date-range-type
-            {% for key, value in form.vars.configuration %}
-                {{ key }}="{{ value }}"
-            {% endfor %}
-            {{ block('widget_attributes') }}
+        {% for key, value in form.vars.configuration %}
+            {{ key }}="{{ value }}"
+        {% endfor %}
+        {{ block('widget_attributes') }}
     >
         {{ form_widget(form) }}
     </runopencode-date-range-type>

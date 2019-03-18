@@ -1,6 +1,15 @@
-import { Component, Element, Prop } from '@stencil/core';
-import Lightpick                    from 'lightpick';
-import { Moment }                   from '../../typings/moment';
+import {
+    Component,
+    Element,
+    Event,
+    EventEmitter,
+    Method,
+    Prop,
+}                  from '@stencil/core';
+import Lightpick   from 'lightpick';
+import { Moment }  from '../../typings/moment';
+import unserialize from '../../functions/unserialize.date-time-type.function';
+import serialize   from '../../functions/serialize.date-time-type.function';
 
 @Component({
     tag     : 'runopencode-date-range-type',
@@ -10,13 +19,10 @@ import { Moment }                   from '../../typings/moment';
 export class DateRangeType {
 
     @Prop()
-    public format: string = 'DD/MM/YYYY';
+    public dateFormat: string = 'DD/MM/YYYY';
 
     @Prop()
-    public numberOfMonths: number = 2;
-
-    @Prop()
-    public buttons: boolean = false;
+    public theme: string = 'bootstrap4';
 
     @Prop()
     public disableWeekends: boolean = false;
@@ -28,10 +34,7 @@ export class DateRangeType {
     public maxDate: Moment | String | Number | Date = null;
 
     @Prop()
-    public minDays: number | null = null;
-
-    @Prop()
-    public maxDays: number | null = null;
+    public placeholder: string = null;
 
     @Prop()
     public disabled: boolean = false;
@@ -40,10 +43,19 @@ export class DateRangeType {
     public readonly: boolean = false;
 
     @Prop()
-    public required: boolean = false
+    public required: boolean = false;
 
     @Prop()
-    public inputClass: string = '';
+    public numberOfMonths: number = 2;
+
+    @Prop()
+    public minDays: number | null = null;
+
+    @Prop()
+    public maxDays: number | null = null;
+
+    @Event()
+    public change: EventEmitter;
 
     @Element()
     private el: HTMLElement;
@@ -52,20 +64,23 @@ export class DateRangeType {
 
     private input: HTMLElement;
 
-    private cssClasses: string | null;
+    private readonly themes: { [name: string]: Function } = {
+        'bootstrap4': this.renderBoostrap4Theme,
+    };
 
-    private cssStyle: string | null;
+    public hostData() {
 
-    public componentWillLoad(): void {
-        this.cssClasses = this.el.getAttribute('class');
-        this.cssStyle   = this.el.getAttribute('style');
+        return {
+            'class': {
+                [this.theme]: true,
+            },
+        };
     }
 
     public componentDidLoad(): void {
-        this.input    = this.el.querySelector('input[type="text"]');
-        let from      = this.unserialize('from');
-        let to        = this.unserialize('to');
-        let serialize = this.serialize.bind(this);
+        this.input            = this.el.querySelector('input[type="text"]');
+        let from: Date | null = unserialize(this.el, 'from');
+        let to: Date | null   = unserialize(this.el, 'to');
 
         this.picker = new Lightpick({
             field          : this.input,
@@ -74,105 +89,123 @@ export class DateRangeType {
             maxDate        : this.maxDate,
             minDays        : this.minDays,
             maxDays        : this.maxDays,
-            footer         : this.buttons,
-            format         : this.format,
+            format         : this.dateFormat,
             numberOfMonths : this.numberOfMonths,
             numberOfColumns: this.numberOfMonths,
             hoveringTooltip: false,
             disableWeekends: this.disableWeekends,
             onSelect       : (start: Moment, end: Moment) => {
-                serialize('from', start ? start.toDate() : null);
-                serialize('to', end ? end.toDate() : null);
+                from = start ? start.toDate() : null;
+                to   = end ? end.toDate() : null;
+                serialize(this.el, from, 'from');
+                serialize(this.el, to, 'to');
+                this.change.emit([from, to]);
             },
         });
 
         if (from || to) {
             this.picker.setDateRange(from, to);
         }
-
-        if (this.cssClasses) {
-
-            this.cssClasses.split(' ').forEach((cssClass: string) => {
-                this.el.classList.remove(cssClass);
-                this.input.classList.add(cssClass);
-            });
-        }
-
-        if (this.cssStyle) {
-            this.input.setAttribute('style', this.cssStyle);
-            this.el.setAttribute('style', this.cssStyle);
-        }
     }
 
     public componentDidUnload(): void {
-
-        if (this.cssClasses) {
-            this.el.className = this.cssClasses;
-        }
-
-        if (this.cssStyle) {
-            this.el.setAttribute('style', this.cssStyle);
-        }
-
         this.picker.destroy();
     }
 
     public render() {
-        return [
-            <div>
-                <input type="text" class={this.inputClass} readonly={this.readonly} disabled={this.disabled}
-                       required={this.required}/>
 
-                {!this.required
-                    ? <span>Close</span>
-                    : ''
-                }
+        if (this.themes[this.theme]) {
+            return this.themes[this.theme].apply(this, []);
+        }
+
+        throw new Error(`Theme "${this.theme}" is not supported.`);
+    }
+
+    @Method()
+    public async getValue(): Promise<[Date | null, Date | null]> {
+        return [
+            this.picker.getStartDate(),
+            this.picker.getEndDate(),
+        ]
+    }
+
+    @Method()
+    public async getDateFrom(): Promise<Date | null> {
+        return this.picker.getStartDate();
+    }
+
+    @Method()
+    public async getDateTo(): Promise<Date | null> {
+        return this.picker.getEndDate();
+    }
+
+    @Method()
+    public async setValue(from: Date | null, to: Date | null): Promise<void> {
+        this.picker.setDateRange(from, to);
+        serialize(this.el, from, 'from');
+        serialize(this.el, to, 'to');
+        this.change.emit([from, to]);
+    }
+
+    @Method()
+    public async setDateFrom(from: Date | null): Promise<void> {
+        let to: Date | null = this.picker.getEndDate() ? this.picker.getEndDate().toDate() : null;
+        this.setValue(from, to);
+    }
+
+    @Method()
+    public async setDateTo(to: Date | null): Promise<void> {
+        let from: Date | null = this.picker.getStartDate() ? this.picker.getStartDate().toDate() : null;
+        this.setValue(from, to);
+    }
+
+    private show(event: UIEvent): void {
+        this.picker.show();
+        event.stopPropagation();
+    }
+
+    private clear(event: UIEvent): void {
+        this.setValue(null, null);
+        event.stopPropagation();
+    }
+
+    private renderBoostrap4Theme() {
+
+        return [
+
+            <div>
+
+                <div class="input-group">
+                    <input
+                        type="text"
+                        readonly={this.readonly}
+                        disabled={this.disabled}
+                        required={this.required}
+                        placeholder={this.placeholder}
+                        class="form-control"
+                    />
+
+                    <div class="input-group-append">
+                        <span class="input-group-text" onClick={(event: UIEvent) => this.show.bind(this)(event)}>
+                            <i class="far fa-calendar-alt"></i>
+                        </span>
+
+                        {this.required
+                            ?
+                            ''
+                            :
+                            <span class="input-group-text" onClick={(event: UIEvent) => this.clear.bind(this)(event)}>
+                                <i class="fas fa-times"></i>
+                            </span>
+                        }
+                    </div>
+                </div>
 
                 <div class="hidden" hidden>
                     <slot/>
                 </div>
+
             </div>,
         ]
-    }
-
-    private unserialize(field: string): Date | null {
-        let dayElement: HTMLSelectElement   = (this.el.querySelector(`[name$="[${field}][day]"]`) as HTMLSelectElement);
-        let monthElement: HTMLSelectElement = (this.el.querySelector(`[name$="[${field}][month]"]`) as HTMLSelectElement);
-        let yearElement: HTMLSelectElement  = (this.el.querySelector(`[name$="[${field}][year]"]`) as HTMLSelectElement);
-        let day: string                     = dayElement.selectedIndex !== -1 ? (dayElement[dayElement.selectedIndex] as HTMLOptionElement).value : null;
-        let month: string                   = monthElement.selectedIndex !== -1 ? (monthElement[monthElement.selectedIndex] as HTMLOptionElement).value : null;
-        let year: string                    = yearElement.selectedIndex !== -1 ? (yearElement[yearElement.selectedIndex] as HTMLOptionElement).value : null;
-
-        if (!day) {
-            return null;
-        }
-
-        if (!month) {
-            return null;
-        }
-
-        if (!year) {
-            return null;
-        }
-
-        return new Date(parseInt(year, 10), parseInt(month, 10) - 1, parseInt(day, 10));
-    }
-
-    private serialize(field: string, value: Date | null): void {
-        let dayElement: HTMLSelectElement   = (this.el.querySelector(`[name$="[${field}][day]"]`) as HTMLSelectElement);
-        let monthElement: HTMLSelectElement = (this.el.querySelector(`[name$="[${field}][month]"]`) as HTMLSelectElement);
-        let yearElement: HTMLSelectElement  = (this.el.querySelector(`[name$="[${field}][year]"]`) as HTMLSelectElement);
-
-        dayElement.selectedIndex   = -1;
-        monthElement.selectedIndex = -1;
-        yearElement.selectedIndex  = -1;
-
-        if (!value) {
-            return;
-        }
-
-        (dayElement.querySelector(`option[value="${value.getDate()}"]`) as HTMLOptionElement).selected          = true;
-        (monthElement.querySelector(`option[value="${value.getMonth() + 1}"]`) as HTMLOptionElement).selected   = true;
-        (yearElement.querySelector(`option[value="${value.getFullYear() + 1}"]`) as HTMLOptionElement).selected = true;
     }
 }

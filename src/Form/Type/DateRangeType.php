@@ -48,22 +48,24 @@ final class DateRangeType extends AbstractType
     {
         $configuration = [];
         $keys          = [
-            'format',
-            'number_of_months',
-            'buttons',
+            'date_format',
             'disable_weekends',
             'min_date',
             'max_date',
-            'min_days',
-            'max_days',
             'required',
             'disabled',
+            'readonly',
+            'placeholder',
+            'number_of_months',
+            'min_days',
+            'max_days',
         ];
 
         foreach ($keys as $key) {
 
             if (null !== $options[$key]) {
-                $configuration[$key] = Prop::value($options[$key]);
+                $value                           = $options[$key];
+                $configuration[Prop::name($key)] = Prop::value($value);
             }
         }
 
@@ -75,21 +77,13 @@ final class DateRangeType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefault('format', null);
-        $resolver->setAllowedTypes('format', ['null', 'string']);
+        $resolver->setDefault('placeholder', '');
 
-        $resolver->setDefault('number_of_months', null);
-        $resolver->setAllowedTypes('number_of_months', ['null', 'int']);
-        $resolver->setAllowedValues('number_of_months', function($value) {
-            if (null === $value) {
-                return true;
-            }
+        $resolver->setDefault('date_format', null);
+        $resolver->setAllowedTypes('date_format', ['null', 'string']);
 
-            return $value >= 1;
-        });
-
-        $resolver->setDefault('buttons', null);
-        $resolver->setAllowedTypes('buttons', ['null', 'bool']);
+        $resolver->setDefault('theme', null);
+        $resolver->setAllowedTypes('theme', ['string', 'null']);
 
         $resolver->setDefault('disable_weekends', null);
         $resolver->setAllowedTypes('disable_weekends', ['null', 'bool']);
@@ -114,6 +108,19 @@ final class DateRangeType extends AbstractType
             return $value->format(\DateTime::ATOM);
         });
 
+        $resolver->setDefault('readonly', null);
+        $resolver->setAllowedTypes('readonly', ['null', 'bool']);
+
+        $resolver->setDefault('number_of_months', null);
+        $resolver->setAllowedTypes('number_of_months', ['null', 'int']);
+        $resolver->setAllowedValues('number_of_months', function($value) {
+            if (null === $value) {
+                return true;
+            }
+
+            return $value >= 1;
+        });
+
         $resolver->setDefault('min_days', null);
         $resolver->setAllowedTypes('min_days', ['null', 'int']);
         $resolver->setAllowedValues('min_days', function($value) {
@@ -133,9 +140,6 @@ final class DateRangeType extends AbstractType
 
             return $value >= 1;
         });
-
-        $resolver->setDefault('readonly', null);
-        $resolver->setAllowedTypes('readonly', ['null', 'bool']);
     }
 
     /**

@@ -76,7 +76,8 @@ export class DateType {
             hoveringTooltip: false,
             disableWeekends: this.disableWeekends,
             onSelect       : (date: Moment) => {
-                this.setValue(date.toDate());
+                serialize(this.el, date ? date.toDate() : null);
+                this.change.emit(date);
             },
         });
 

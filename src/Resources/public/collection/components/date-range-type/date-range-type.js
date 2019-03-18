@@ -1,28 +1,35 @@
 import Lightpick from 'lightpick';
+import unserialize from '../../functions/unserialize.date-time-type.function';
+import serialize from '../../functions/serialize.date-time-type.function';
 export class DateRangeType {
     constructor() {
-        this.format = 'DD/MM/YYYY';
-        this.numberOfMonths = 2;
-        this.buttons = false;
+        this.dateFormat = 'DD/MM/YYYY';
+        this.theme = 'bootstrap4';
         this.disableWeekends = false;
         this.minDate = null;
         this.maxDate = null;
-        this.minDays = null;
-        this.maxDays = null;
+        this.placeholder = null;
         this.disabled = false;
         this.readonly = false;
         this.required = false;
-        this.inputClass = '';
+        this.numberOfMonths = 2;
+        this.minDays = null;
+        this.maxDays = null;
+        this.themes = {
+            'bootstrap4': this.renderBoostrap4Theme,
+        };
     }
-    componentWillLoad() {
-        this.cssClasses = this.el.getAttribute('class');
-        this.cssStyle = this.el.getAttribute('style');
+    hostData() {
+        return {
+            'class': {
+                [this.theme]: true,
+            },
+        };
     }
     componentDidLoad() {
         this.input = this.el.querySelector('input[type="text"]');
-        let from = this.unserialize('from');
-        let to = this.unserialize('to');
-        let serialize = this.serialize.bind(this);
+        let from = unserialize(this.el, 'from');
+        let to = unserialize(this.el, 'to');
         this.picker = new Lightpick({
             field: this.input,
             singleDate: false,
@@ -30,88 +37,89 @@ export class DateRangeType {
             maxDate: this.maxDate,
             minDays: this.minDays,
             maxDays: this.maxDays,
-            footer: this.buttons,
-            format: this.format,
+            format: this.dateFormat,
             numberOfMonths: this.numberOfMonths,
             numberOfColumns: this.numberOfMonths,
             hoveringTooltip: false,
             disableWeekends: this.disableWeekends,
             onSelect: (start, end) => {
-                serialize('from', start ? start.toDate() : null);
-                serialize('to', end ? end.toDate() : null);
+                from = start ? start.toDate() : null;
+                to = end ? end.toDate() : null;
+                serialize(this.el, from, 'from');
+                serialize(this.el, to, 'to');
+                this.change.emit([from, to]);
             },
         });
         if (from || to) {
             this.picker.setDateRange(from, to);
         }
-        if (this.cssClasses) {
-            this.cssClasses.split(' ').forEach((cssClass) => {
-                this.el.classList.remove(cssClass);
-                this.input.classList.add(cssClass);
-            });
-        }
-        if (this.cssStyle) {
-            this.input.setAttribute('style', this.cssStyle);
-            this.el.setAttribute('style', this.cssStyle);
-        }
     }
     componentDidUnload() {
-        if (this.cssClasses) {
-            this.el.className = this.cssClasses;
-        }
-        if (this.cssStyle) {
-            this.el.setAttribute('style', this.cssStyle);
-        }
         this.picker.destroy();
     }
     render() {
+        if (this.themes[this.theme]) {
+            return this.themes[this.theme].apply(this, []);
+        }
+        throw new Error(`Theme "${this.theme}" is not supported.`);
+    }
+    async getValue() {
+        return [
+            this.picker.getStartDate(),
+            this.picker.getEndDate(),
+        ];
+    }
+    async getDateFrom() {
+        return this.picker.getStartDate();
+    }
+    async getDateTo() {
+        return this.picker.getEndDate();
+    }
+    async setValue(from, to) {
+        this.picker.setDateRange(from, to);
+        serialize(this.el, from, 'from');
+        serialize(this.el, to, 'to');
+        this.change.emit([from, to]);
+    }
+    async setDateFrom(from) {
+        let to = this.picker.getEndDate() ? this.picker.getEndDate().toDate() : null;
+        this.setValue(from, to);
+    }
+    async setDateTo(to) {
+        let from = this.picker.getStartDate() ? this.picker.getStartDate().toDate() : null;
+        this.setValue(from, to);
+    }
+    show(event) {
+        this.picker.show();
+        event.stopPropagation();
+    }
+    clear(event) {
+        this.setValue(null, null);
+        event.stopPropagation();
+    }
+    renderBoostrap4Theme() {
         return [
             h("div", null,
-                h("input", { type: "text", class: this.inputClass, readonly: this.readonly, disabled: this.disabled, required: this.required }),
-                !this.required
-                    ? h("span", null, "Close")
-                    : '',
+                h("div", { class: "input-group" },
+                    h("input", { type: "text", readonly: this.readonly, disabled: this.disabled, required: this.required, placeholder: this.placeholder, class: "form-control" }),
+                    h("div", { class: "input-group-append" },
+                        h("span", { class: "input-group-text", onClick: (event) => this.show.bind(this)(event) },
+                            h("i", { class: "far fa-calendar-alt" })),
+                        this.required
+                            ?
+                                ''
+                            :
+                                h("span", { class: "input-group-text", onClick: (event) => this.clear.bind(this)(event) },
+                                    h("i", { class: "fas fa-times" })))),
                 h("div", { class: "hidden", hidden: true },
                     h("slot", null))),
         ];
     }
-    unserialize(field) {
-        let dayElement = this.el.querySelector(`[name$="[${field}][day]"]`);
-        let monthElement = this.el.querySelector(`[name$="[${field}][month]"]`);
-        let yearElement = this.el.querySelector(`[name$="[${field}][year]"]`);
-        let day = dayElement.selectedIndex !== -1 ? dayElement[dayElement.selectedIndex].value : null;
-        let month = monthElement.selectedIndex !== -1 ? monthElement[monthElement.selectedIndex].value : null;
-        let year = yearElement.selectedIndex !== -1 ? yearElement[yearElement.selectedIndex].value : null;
-        if (!day) {
-            return null;
-        }
-        if (!month) {
-            return null;
-        }
-        if (!year) {
-            return null;
-        }
-        return new Date(parseInt(year, 10), parseInt(month, 10) - 1, parseInt(day, 10));
-    }
-    serialize(field, value) {
-        let dayElement = this.el.querySelector(`[name$="[${field}][day]"]`);
-        let monthElement = this.el.querySelector(`[name$="[${field}][month]"]`);
-        let yearElement = this.el.querySelector(`[name$="[${field}][year]"]`);
-        dayElement.selectedIndex = -1;
-        monthElement.selectedIndex = -1;
-        yearElement.selectedIndex = -1;
-        if (!value) {
-            return;
-        }
-        dayElement.querySelector(`option[value="${value.getDate()}"]`).selected = true;
-        monthElement.querySelector(`option[value="${value.getMonth() + 1}"]`).selected = true;
-        yearElement.querySelector(`option[value="${value.getFullYear() + 1}"]`).selected = true;
-    }
     static get is() { return "runopencode-date-range-type"; }
     static get properties() { return {
-        "buttons": {
-            "type": Boolean,
-            "attr": "buttons"
+        "dateFormat": {
+            "type": String,
+            "attr": "date-format"
         },
         "disabled": {
             "type": Boolean,
@@ -124,13 +132,14 @@ export class DateRangeType {
         "el": {
             "elementRef": true
         },
-        "format": {
-            "type": String,
-            "attr": "format"
+        "getDateFrom": {
+            "method": true
         },
-        "inputClass": {
-            "type": String,
-            "attr": "input-class"
+        "getDateTo": {
+            "method": true
+        },
+        "getValue": {
+            "method": true
         },
         "maxDate": {
             "type": "Any",
@@ -152,6 +161,10 @@ export class DateRangeType {
             "type": Number,
             "attr": "number-of-months"
         },
+        "placeholder": {
+            "type": String,
+            "attr": "placeholder"
+        },
         "readonly": {
             "type": Boolean,
             "attr": "readonly"
@@ -159,7 +172,27 @@ export class DateRangeType {
         "required": {
             "type": Boolean,
             "attr": "required"
+        },
+        "setDateFrom": {
+            "method": true
+        },
+        "setDateTo": {
+            "method": true
+        },
+        "setValue": {
+            "method": true
+        },
+        "theme": {
+            "type": String,
+            "attr": "theme"
         }
     }; }
+    static get events() { return [{
+            "name": "change",
+            "method": "change",
+            "bubbles": true,
+            "cancelable": true,
+            "composed": true
+        }]; }
     static get style() { return "/**style-placeholder:runopencode-date-range-type:**/"; }
 }

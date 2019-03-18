@@ -22,7 +22,7 @@ export default function serialize(context: HTMLElement, value: Date | null, fiel
         let option: HTMLOptionElement = (document.createElement('option') as HTMLOptionElement);
         option.value                  = value;
         option.text                   = value;
-        
+
         select.add(option);
         select.selectedIndex = 0;
     };

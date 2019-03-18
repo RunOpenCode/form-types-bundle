@@ -16,32 +16,39 @@ import {
 export namespace Components {
 
   interface RunopencodeDateRangeType {
-    'buttons': boolean;
+    'dateFormat': string;
     'disableWeekends': boolean;
     'disabled': boolean;
-    'format': string;
-    'inputClass': string;
+    'getDateFrom': () => Promise<Date>;
+    'getDateTo': () => Promise<Date>;
+    'getValue': () => Promise<[Date, Date]>;
     'maxDate': Moment | String | Number | Date;
     'maxDays': number | null;
     'minDate': Moment | String | Number | Date;
     'minDays': number | null;
     'numberOfMonths': number;
+    'placeholder': string;
     'readonly': boolean;
     'required': boolean;
+    'setDateFrom': (from: Date) => Promise<void>;
+    'setDateTo': (to: Date) => Promise<void>;
+    'setValue': (from: Date, to: Date) => Promise<void>;
+    'theme': string;
   }
   interface RunopencodeDateRangeTypeAttributes extends StencilHTMLAttributes {
-    'buttons'?: boolean;
+    'dateFormat'?: string;
     'disableWeekends'?: boolean;
     'disabled'?: boolean;
-    'format'?: string;
-    'inputClass'?: string;
     'maxDate'?: Moment | String | Number | Date;
     'maxDays'?: number | null;
     'minDate'?: Moment | String | Number | Date;
     'minDays'?: number | null;
     'numberOfMonths'?: number;
+    'onChange'?: (event: CustomEvent) => void;
+    'placeholder'?: string;
     'readonly'?: boolean;
     'required'?: boolean;
+    'theme'?: string;
   }
 
   interface RunopencodeDateType {

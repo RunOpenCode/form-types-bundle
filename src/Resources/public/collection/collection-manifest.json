@@ -14,9 +14,9 @@
       },
       "props": [
         {
-          "name": "buttons",
-          "type": "Boolean",
-          "attr": "buttons"
+          "name": "dateFormat",
+          "type": "String",
+          "attr": "date-format"
         },
         {
           "name": "disabled",
@@ -27,16 +27,6 @@
           "name": "disableWeekends",
           "type": "Boolean",
           "attr": "disable-weekends"
-        },
-        {
-          "name": "format",
-          "type": "String",
-          "attr": "format"
-        },
-        {
-          "name": "inputClass",
-          "type": "String",
-          "attr": "input-class"
         },
         {
           "name": "maxDate",
@@ -62,6 +52,11 @@
           "attr": "number-of-months"
         },
         {
+          "name": "placeholder",
+          "type": "String",
+          "attr": "placeholder"
+        },
+        {
           "name": "readonly",
           "type": "Boolean",
           "attr": "readonly"
@@ -70,11 +65,41 @@
           "name": "required",
           "type": "Boolean",
           "attr": "required"
+        },
+        {
+          "name": "theme",
+          "type": "String",
+          "attr": "theme"
+        }
+      ],
+      "methods": [
+        {
+          "name": "getDateFrom"
+        },
+        {
+          "name": "getDateTo"
+        },
+        {
+          "name": "getValue"
+        },
+        {
+          "name": "setDateFrom"
+        },
+        {
+          "name": "setDateTo"
+        },
+        {
+          "name": "setValue"
         }
       ],
       "hostElement": {
         "name": "el"
-      }
+      },
+      "events": [
+        {
+          "event": "change"
+        }
+      ]
     },
     {
       "tag": "runopencode-date-type",

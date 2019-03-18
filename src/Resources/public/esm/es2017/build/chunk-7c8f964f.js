@@ -1,21 +1,9 @@
-const h = window.runopencode.h;
+import { h } from '../runopencode.core.js';
 
 var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
-function commonjsRequire () {
-	throw new Error('Dynamic requires are not currently supported by rollup-plugin-commonjs');
-}
-
-function unwrapExports (x) {
-	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x.default : x;
-}
-
 function createCommonjsModule(fn, module) {
 	return module = { exports: {} }, fn(module, module.exports), module.exports;
-}
-
-function getCjsExportFromNamespace (n) {
-	return n && n.default || n;
 }
 
 var hookCallback;
@@ -3277,7 +3265,7 @@ function isSameOrBefore (input, units) {
 function diff (input, units, asFloat) {
     var that,
         zoneDelta,
-        delta, output;
+        output;
 
     if (!this.isValid()) {
         return NaN;
@@ -4610,12 +4598,6 @@ hooks.HTML5_FMT = {
     MONTH: 'YYYY-MM'                                // <input type="month" />
 };
 
-var moment = /*#__PURE__*/Object.freeze({
-	default: hooks
-});
-
-var require$$0 = getCjsExportFromNamespace(moment);
-
 var lightpick = createCommonjsModule(function (module) {
 /**
 * @author: Rinat G. http://coding.kz
@@ -4625,21 +4607,15 @@ var lightpick = createCommonjsModule(function (module) {
 
 // Following the UMD template https://github.com/umdjs/umd/blob/master/templates/returnExportsGlobal.js
 (function (root, factory) {
-    if (typeof undefined === 'function' && undefined.amd) {
-        // AMD. Make globaly available as well
-        undefined(['moment'], function (moment) {
-            return factory(moment);
-        });
-    } else if ('object' === 'object' && module.exports) {
+    if (module.exports) {
         // Node / Browserify
-        var moment = (typeof window != 'undefined' && typeof window.moment != 'undefined') ? window.moment : require$$0;
+        var moment = (typeof window != 'undefined' && typeof window.moment != 'undefined') ? window.moment : hooks;
         module.exports = factory(moment);
     } else {
         // Browser globals
         root.Lightpick = factory(root.moment);
     }
 }(commonjsGlobal, function(moment) {
-    'use strict';
 
     var document = window.document,
 
@@ -4824,9 +4800,7 @@ var lightpick = createCommonjsModule(function (module) {
             day.className.push('is-in-range');
         }
 
-        if (moment().isSame(date, 'month')) {
-
-        }
+        if (moment().isSame(date, 'month')) ;
         else if (prevMonth.isSame(date, 'month')) {
             day.className.push('is-previous-month');
         }
@@ -4911,8 +4885,7 @@ var lightpick = createCommonjsModule(function (module) {
                 }
             }
 
-            var daysInMonth = day.daysInMonth(),
-                today = new Date();
+            var daysInMonth = day.daysInMonth();
 
             for (var d = 0; d < daysInMonth; d++) {
                 html += renderDay(opts, day);
@@ -5899,4 +5872,91 @@ var lightpick = createCommonjsModule(function (module) {
 }));
 });
 
-export { lightpick as a };
+function unserialize(context, field) {
+    field = field ? `[${field}]` : '';
+    let yearElement = context.querySelector(`[name$="${field}[year]"]`);
+    let monthElement = context.querySelector(`[name$="${field}[month]"]`);
+    let dayElement = context.querySelector(`[name$="${field}[day]"]`);
+    let hourElement = context.querySelector(`[name$="${field}[hour]"]`);
+    let minuteElement = context.querySelector(`[name$="${field}[minute]"]`);
+    let secondElement = context.querySelector(`[name$="${field}[second]"]`);
+    let year = yearElement.selectedIndex !== -1 ? yearElement[yearElement.selectedIndex].value : null;
+    let month = monthElement.selectedIndex !== -1 ? monthElement[monthElement.selectedIndex].value : null;
+    let day = dayElement.selectedIndex !== -1 ? dayElement[dayElement.selectedIndex].value : null;
+    let hour = null;
+    let minute = null;
+    let second = null;
+    if (hourElement) {
+        hour = hourElement.selectedIndex !== -1 ? yearElement[hourElement.selectedIndex].value : null;
+    }
+    if (minuteElement) {
+        minute = minuteElement.selectedIndex !== -1 ? yearElement[minuteElement.selectedIndex].value : null;
+    }
+    if (secondElement) {
+        second = secondElement.selectedIndex !== -1 ? yearElement[secondElement.selectedIndex].value : null;
+    }
+    if (!year || !month || !day) {
+        return null;
+    }
+    if (hourElement && !hour) {
+        return null;
+    }
+    if (minuteElement && !minute) {
+        return null;
+    }
+    if (secondElement && !second) {
+        return null;
+    }
+    return new Date(parseInt(year, 10), parseInt(month, 10) - 1, parseInt(day, 10), hour ? parseInt(hour, 10) : null, minute ? parseInt(minute, 10) : null, second ? parseInt(second, 10) : null);
+}
+
+function serialize(context, value, field) {
+    field = field ? `[${field}]` : '';
+    let yearElement = context.querySelector(`[name$="${field}[year]"]`);
+    let monthElement = context.querySelector(`[name$="${field}[month]"]`);
+    let dayElement = context.querySelector(`[name$="${field}[day]"]`);
+    let hourElement = context.querySelector(`[name$="${field}[hour]"]`);
+    let minuteElement = context.querySelector(`[name$="${field}[minute]"]`);
+    let secondElement = context.querySelector(`[name$="${field}[second]"]`);
+    let clear = function (select) {
+        while (select.options.length > 0) {
+            select.options.remove(0);
+        }
+    };
+    let set = function (select, value) {
+        let option = document.createElement('option');
+        option.value = value;
+        option.text = value;
+        select.add(option);
+        select.selectedIndex = 0;
+    };
+    clear(dayElement);
+    clear(monthElement);
+    clear(yearElement);
+    if (hourElement) {
+        clear(hourElement);
+    }
+    if (minuteElement) {
+        clear(minuteElement);
+    }
+    if (secondElement) {
+        clear(secondElement);
+    }
+    if (!value) {
+        return;
+    }
+    set(dayElement, value.getDate().toString());
+    set(monthElement, (value.getMonth() + 1).toString());
+    set(yearElement, value.getFullYear().toString());
+    if (hourElement) {
+        set(hourElement, value.getHours().toString());
+    }
+    if (minuteElement) {
+        set(minuteElement, value.getMinutes().toString());
+    }
+    if (secondElement) {
+        set(secondElement, value.getSeconds().toString());
+    }
+}
+
+export { unserialize as a, lightpick as b, serialize as c };
