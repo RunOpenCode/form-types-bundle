@@ -78,7 +78,7 @@ class ChoiceType {
             searchPlaceholderValue: this.searchPlaceholder,
             itemSelectText: '',
         });
-        this.el.addEventListener('change', (event) => {
+        this.select.addEventListener('change', (event) => {
             event.stopPropagation();
             this.change.emit(this.choices.getValue(true));
         });

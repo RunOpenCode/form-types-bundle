@@ -46,7 +46,7 @@ export class ChoiceType {
             itemSelectText        : '',
         });
 
-        this.el.addEventListener('change', (event: UIEvent) => {
+        this.select.addEventListener('change', (event: UIEvent) => {
             event.stopPropagation();
             this.change.emit(this.choices.getValue(true));
         });
