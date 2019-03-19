@@ -13,26 +13,13 @@ use Symfony\Component\Form\FormView;
 final class NoValidateExtension extends AbstractTypeExtension
 {
     /**
-     * @var bool
-     */
-    private $enabled;
-
-    public function __construct(bool $enabled)
-    {
-        $this->enabled = $enabled;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
-        if (true === $this->enabled) {
-
-            $view->vars['attr'] = array_merge($view->vars['attr'], [
-                'novalidate' => 'novalidate',
-            ]);
-        }
+        $view->vars['attr'] = array_merge($view->vars['attr'], [
+            'novalidate' => 'novalidate',
+        ]);
     }
 
     /**

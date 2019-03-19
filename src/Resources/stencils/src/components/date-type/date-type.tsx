@@ -82,7 +82,7 @@ export class DateType {
         });
 
         if (date) {
-            this.picker.setDateRange(date);
+            this.picker.setDate(date);
         }
     }
 

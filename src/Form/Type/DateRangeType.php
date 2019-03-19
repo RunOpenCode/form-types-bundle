@@ -2,13 +2,11 @@
 
 namespace RunOpenCode\FormTypes\Form\Type;
 
-use RunOpenCode\FormTypes\Type\DateRange;
+use RunOpenCode\FormTypes\Form\DataTransformer\DateRangeToArrayTransformer;
 use RunOpenCode\FormTypes\Form\Utils\Prop;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
@@ -22,23 +20,21 @@ final class DateRangeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('from', DateType::class, [
-            'required'    => $options['required'] ?? true,
-            'mapped'      => false,
-            'placeholder' => '',
+            'required'       => $options['required'] ?? true,
+            'mapped'         => false,
+            'placeholder'    => '',
+            'model_timezone' => $options['model_timezone'],
+            'view_timezone'  => $options['view_timezone'],
         ]);
         $builder->add('to', DateType::class, [
-            'required'    => $options['required'] ?? true,
-            'mapped'      => false,
-            'placeholder' => '',
+            'required'       => $options['required'] ?? true,
+            'mapped'         => false,
+            'placeholder'    => '',
+            'model_timezone' => $options['model_timezone'],
+            'view_timezone'  => $options['view_timezone'],
         ]);
 
-        $builder->addEventListener(FormEvents::POST_SET_DATA, \Closure::bind(function(FormEvent $event) {
-            $this->onPostSetData($event);
-        }, $this));
-
-        $builder->addEventListener(FormEvents::SUBMIT, \Closure::bind(function(FormEvent $event) {
-            $this->onSubmit($event);
-        }, $this));
+        $builder->addModelTransformer(new DateRangeToArrayTransformer());
     }
 
     /**
@@ -78,6 +74,9 @@ final class DateRangeType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefault('placeholder', '');
+        $resolver->setDefault('by_reference', false);
+        $resolver->setDefault('error_bubbling', false);
+        $resolver->setDefault('data_class', null);
 
         $resolver->setDefault('date_format', null);
         $resolver->setAllowedTypes('date_format', ['null', 'string']);
@@ -140,6 +139,12 @@ final class DateRangeType extends AbstractType
 
             return $value >= 1;
         });
+
+        $resolver->setDefault('model_timezone', null);
+        $resolver->setAllowedTypes('model_timezone', ['null', 'string', \DateTimeZone::class]);
+
+        $resolver->setDefault('view_timezone', null);
+        $resolver->setAllowedTypes('view_timezone', ['null', 'string', \DateTimeZone::class]);
     }
 
     /**
@@ -148,37 +153,5 @@ final class DateRangeType extends AbstractType
     public function getBlockPrefix(): string
     {
         return 'runopencode_date_range_type';
-    }
-
-    private function onPostSetData(FormEvent $event): void
-    {
-        /**
-         * @var \RunOpenCode\FormTypes\Type\DateRange
-         */
-        $data = $event->getData();
-
-        if (null === $data) {
-            return;
-        }
-
-        $form = $event->getForm();
-
-        $form->get('from')->setData($data->from());
-        $form->get('to')->setData($data->to());
-    }
-
-    private function onSubmit(FormEvent $event): void
-    {
-        $form = $event->getForm();
-        $from = $form->get('from')->getData();
-        $to   = $form->get('to')->getData();
-
-        if (null !== $from && null !== $to) {
-            $event->setData(new DateRange($from, $to));
-
-            return;
-        }
-
-        $event->setData(null);
     }
 }

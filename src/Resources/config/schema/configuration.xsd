@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<xsd:schema xmlns="http://www.runopencode.com/xsd-schema/form-types"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="http://www.runopencode.com/xsd-schema/form-types"
+            elementFormDefault="qualified">
+
+    <xsd:element name="config" type="config" />
+
+    <xsd:complexType name="config">
+
+        <xsd:sequence>
+
+            <xsd:element name="extensions" minOccurs="0" maxOccurs="1">
+
+                <xsd:complexType>
+
+                    <xsd:sequence>
+
+                        <xsd:element name="novalidate" minOccurs="0" maxOccurs="1" type="xsd:boolean"/>
+
+                        <xsd:element name="timezone-aware" minOccurs="0" maxOccurs="1">
+
+                            <xsd:complexType>
+
+                                <xsd:attribute name="enabled" type="xsd:boolean" use="required"/>
+
+                                <xsd:attribute name="model-timezone" type="xsd:string" use="optional"/>
+
+                            </xsd:complexType>
+
+                        </xsd:element>
+
+                    </xsd:sequence>
+
+                </xsd:complexType>
+
+            </xsd:element>
+
+        </xsd:sequence>
+
+    </xsd:complexType>
+
+</xsd:schema>

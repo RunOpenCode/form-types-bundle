@@ -13,10 +13,6 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 final class TimezoneExtension extends AbstractTypeExtension
 {
-    /**
-     * @var bool
-     */
-    private $enabled;
 
     /**
      * @var \Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface
@@ -26,13 +22,14 @@ final class TimezoneExtension extends AbstractTypeExtension
     /**
      * @var \DateTimeZone
      */
-    private $defaultTimezone;
+    private $modelTimezone;
 
-    public function __construct(bool $enabled, TokenStorageInterface $tokenStorage, \DateTimeZone $defaultTimezone = null)
+    public function __construct(TokenStorageInterface $tokenStorage, $modelTimezone = null)
     {
-        $this->enabled         = $enabled;
-        $this->tokenStorage    = $tokenStorage;
-        $this->defaultTimezone = $defaultTimezone ?? new \DateTimeZone(date_default_timezone_get());
+        $modelTimezone = $modelTimezone ?? date_default_timezone_get();
+
+        $this->tokenStorage  = $tokenStorage;
+        $this->modelTimezone = \is_string($modelTimezone) ? new \DateTimeZone($modelTimezone) : $modelTimezone;
     }
 
     /**
@@ -40,9 +37,7 @@ final class TimezoneExtension extends AbstractTypeExtension
      */
     public function configureOptions(OptionsResolver $resolver): void
     {
-        if (false === $this->enabled) {
-            return;
-        }
+        $resolver->setDefault('model_timezone', $this->modelTimezone);
 
         $token = $this->tokenStorage->getToken();
 
@@ -56,10 +51,9 @@ final class TimezoneExtension extends AbstractTypeExtension
             return;
         }
 
-        $timezone = $user->getTimezone() ?: $this->defaultTimezone;
+        $timezone = $user->getTimezone() ?: $this->modelTimezone;
 
         $resolver->setDefault('view_timezone', $timezone);
-        $resolver->setDefault('model_timezone', $this->defaultTimezone);
     }
 
     public static function getExtendedTypes(): array

@@ -2,7 +2,9 @@
 
 namespace RunOpenCode\FormTypes\Type;
 
-final class DateRange
+use RunOpenCode\FormTypes\Contract\DateRangeInterface;
+
+final class DateRange implements DateRangeInterface
 {
     /**
      * @var \DateTimeInterface
@@ -16,6 +18,10 @@ final class DateRange
 
     public function __construct(\DateTimeInterface $from, \DateTimeInterface $to)
     {
+        if ($from > $to) {
+            throw new \InvalidArgumentException('Date from must be before to date to.');
+        }
+
         $this->from = clone $from;
         $this->to   = clone $to;
     }

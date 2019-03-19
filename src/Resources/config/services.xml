@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container
+        xmlns="http://symfony.com/schema/dic/services"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd"
+>
+    <services>
+
+        <defaults public="false">
+
+        </defaults>
+
+        <service id="RunOpenCode\FormTypes\Form\Extension\NoValidateExtension"/>
+        <service id="RunOpenCode\FormTypes\Form\Extension\TimezoneExtension">
+            <argument type="service" id="security.token_storage"/>
+        </service>
+
+        <service id="RunOpenCode\FormTypes\Form\Type\ChoiceType">
+            <tag name="form.type"/>
+        </service>
+
+        <service id="RunOpenCode\FormTypes\Form\Type\DateRangeType">
+            <tag name="form.type"/>
+        </service>
+
+        <service id="RunOpenCode\FormTypes\Form\Type\DateType">
+            <tag name="form.type"/>
+        </service>
+
+        <service id="RunOpenCode\FormTypes\Form\Type\SwitchType">
+            <tag name="form.type"/>
+        </service>
+
+    </services>
+
+</container>
