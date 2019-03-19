@@ -117,6 +117,32 @@
           "required": false
         }
       ]
+    },
+    {
+      "label": "runopencode-switch-type",
+      "description": "",
+      "attributes": [
+        {
+          "label": "disabled",
+          "description": "",
+          "required": false
+        },
+        {
+          "label": "label-checked",
+          "description": "",
+          "required": false
+        },
+        {
+          "label": "label-unchecked",
+          "description": "",
+          "required": false
+        },
+        {
+          "label": "readonly",
+          "description": "",
+          "required": false
+        }
+      ]
     }
   ]
 }

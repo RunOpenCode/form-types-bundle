@@ -25,7 +25,7 @@ export class ChoiceType {
     public searchPlaceholder: string | null;
 
     @Event()
-    public change: EventEmitter;
+    private change: EventEmitter;
 
     @Element()
     private el: HTMLElement;

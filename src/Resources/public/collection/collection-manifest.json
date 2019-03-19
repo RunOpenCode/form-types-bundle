@@ -220,6 +220,72 @@
           "event": "change"
         }
       ]
+    },
+    {
+      "tag": "runopencode-switch-type",
+      "dependencies": [],
+      "componentClass": "SwitchType",
+      "componentPath": "components/switch-type/switch-type.js",
+      "styles": {
+        "$": {
+          "stylePaths": [
+            "components/switch-type/switch-type.scss"
+          ]
+        }
+      },
+      "props": [
+        {
+          "name": "disabled",
+          "type": "Boolean",
+          "attr": "disabled"
+        },
+        {
+          "name": "labelChecked",
+          "type": "String",
+          "attr": "label-checked"
+        },
+        {
+          "name": "labelUnchecked",
+          "type": "String",
+          "attr": "label-unchecked"
+        },
+        {
+          "name": "readonly",
+          "type": "Boolean",
+          "attr": "readonly"
+        }
+      ],
+      "states": [
+        {
+          "name": "checked"
+        }
+      ],
+      "methods": [
+        {
+          "name": "check"
+        },
+        {
+          "name": "getValue"
+        },
+        {
+          "name": "setValue"
+        },
+        {
+          "name": "toggle"
+        },
+        {
+          "name": "uncheck"
+        }
+      ],
+      "hostElement": {
+        "name": "el"
+      },
+      "events": [
+        {
+          "event": "change"
+        }
+      ],
+      "shadow": true
     }
   ],
   "collections": [],

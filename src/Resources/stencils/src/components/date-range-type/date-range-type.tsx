@@ -55,7 +55,7 @@ export class DateRangeType {
     public maxDays: number | null = null;
 
     @Event()
-    public change: EventEmitter;
+    private change: EventEmitter;
 
     @Element()
     private el: HTMLElement;

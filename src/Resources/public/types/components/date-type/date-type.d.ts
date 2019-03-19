@@ -1,4 +1,3 @@
-import { EventEmitter } from '../../stencil.core';
 import { Moment } from '../../typings/moment';
 export declare class DateType {
     dateFormat: string;
@@ -10,7 +9,7 @@ export declare class DateType {
     disabled: boolean;
     readonly: boolean;
     required: boolean;
-    change: EventEmitter;
+    private change;
     private el;
     private picker;
     private input;

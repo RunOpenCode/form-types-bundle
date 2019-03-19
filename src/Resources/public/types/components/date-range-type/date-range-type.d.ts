@@ -1,4 +1,3 @@
-import { EventEmitter } from '../../stencil.core';
 import { Moment } from '../../typings/moment';
 export declare class DateRangeType {
     dateFormat: string;
@@ -13,7 +12,7 @@ export declare class DateRangeType {
     numberOfMonths: number;
     minDays: number | null;
     maxDays: number | null;
-    change: EventEmitter;
+    private change;
     private el;
     private picker;
     private input;

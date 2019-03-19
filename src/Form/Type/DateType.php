@@ -42,6 +42,8 @@ final class DateType extends AbstractType
             }
         }
 
+        $configuration['id']         = $view->vars['id'];
+        $view->vars['id']            = null;
         $view->vars['configuration'] = $configuration;
     }
 

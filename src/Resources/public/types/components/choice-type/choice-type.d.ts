@@ -1,9 +1,8 @@
-import { EventEmitter } from '../../stencil.core';
 export declare class ChoiceType {
     display: number | null;
     placeholder: string | null;
     searchPlaceholder: string | null;
-    change: EventEmitter;
+    private change;
     private el;
     private select;
     private choices;

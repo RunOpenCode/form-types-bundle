@@ -1,35 +1,3 @@
-:root {
-    $primary-color: #007bff;
-    $primary-darker-color: darken($primary-color, 10%);
-    $keyline-color: #DDDDDD;
-    $keyline-darker-color: darken($keyline-color, 10%);
-    $keyline-lighter-color: lighten($keyline-color, 10%);
-    $disabled-color: #eaeaea;
-    disabled-darker-color: darken($disabled-color, 25%);
-    
-    --runopencode-choice-type-font-size-lg: 16px;
-    --runopencode-choice-type-font-size-md: 14px;
-    --runopencode-choice-type-font-size-sm: 12px;
-    --runopencode-choice-type-guttering: 24px;
-    --runopencode-choice-type-border-radius: 2.5px;
-    --runopencode-choice-type-border-radius-item: 20px;
-    --runopencode-choice-type-bg-color: #f9f9f9;
-    --runopencode-choice-type-bg-color-disabled: #EAEAEA;
-    --runopencode-choice-type-bg-color-dropdown: #FFFFFF;
-    --runopencode-choice-type-text-color: #333333;
-    --runopencode-choice-type-keyline-color: #{$keyline-color};
-    --runopencode-choice-type-keyline-darker-color: #{$keyline-darker-color};
-    --runopencode-choice-type-keyline-lighter-color: #{$keyline-darker-color};
-    --runopencode-choice-type-primary-color: #{$primary-color};
-    --runopencode-choice-type-primary-darker-color: #{$primary-darker-color};
-    --runopencode-choice-type-disabled-color: #{$disabled-color};
-    --runopencode-choice-type-disabled-darker-color: #{$keyline-darker-color};
-    --runopencode-choice-type-highlight-color: var(--runopencode-choice-type-primary-color);
-    --runopencode-choice-type-button-dimension: 8px;
-    --runopencode-choice-type-button-offset: 8px;
-    
-}
-
 $choices-selector: 'choices' !default;
 $choices-font-size-lg: var(--runopencode-choice-type-font-size-lg);
 $choices-font-size-md: var(--runopencode-choice-type-font-size-md);

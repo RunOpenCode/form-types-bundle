@@ -19,4 +19,5 @@ export const config: Config = {
             ]
         }),
     ],
+    globalStyle: 'src/global/variables.scss'
 };

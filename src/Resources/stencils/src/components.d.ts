@@ -90,6 +90,25 @@ export namespace Components {
     'required'?: boolean;
     'theme'?: string;
   }
+
+  interface RunopencodeSwitchType {
+    'check': () => Promise<void>;
+    'disabled': boolean;
+    'getValue': () => Promise<boolean>;
+    'labelChecked': string | null;
+    'labelUnchecked': string | null;
+    'readonly': boolean;
+    'setValue': (value: boolean) => Promise<void>;
+    'toggle': () => Promise<void>;
+    'uncheck': () => Promise<void>;
+  }
+  interface RunopencodeSwitchTypeAttributes extends StencilHTMLAttributes {
+    'disabled'?: boolean;
+    'labelChecked'?: string | null;
+    'labelUnchecked'?: string | null;
+    'onChange'?: (event: CustomEvent) => void;
+    'readonly'?: boolean;
+  }
 }
 
 declare global {
@@ -97,12 +116,14 @@ declare global {
     'RunopencodeChoiceType': Components.RunopencodeChoiceType;
     'RunopencodeDateRangeType': Components.RunopencodeDateRangeType;
     'RunopencodeDateType': Components.RunopencodeDateType;
+    'RunopencodeSwitchType': Components.RunopencodeSwitchType;
   }
 
   interface StencilIntrinsicElements {
     'runopencode-choice-type': Components.RunopencodeChoiceTypeAttributes;
     'runopencode-date-range-type': Components.RunopencodeDateRangeTypeAttributes;
     'runopencode-date-type': Components.RunopencodeDateTypeAttributes;
+    'runopencode-switch-type': Components.RunopencodeSwitchTypeAttributes;
   }
 
 
@@ -124,16 +145,24 @@ declare global {
     new (): HTMLRunopencodeDateTypeElement;
   };
 
+  interface HTMLRunopencodeSwitchTypeElement extends Components.RunopencodeSwitchType, HTMLStencilElement {}
+  var HTMLRunopencodeSwitchTypeElement: {
+    prototype: HTMLRunopencodeSwitchTypeElement;
+    new (): HTMLRunopencodeSwitchTypeElement;
+  };
+
   interface HTMLElementTagNameMap {
     'runopencode-choice-type': HTMLRunopencodeChoiceTypeElement
     'runopencode-date-range-type': HTMLRunopencodeDateRangeTypeElement
     'runopencode-date-type': HTMLRunopencodeDateTypeElement
+    'runopencode-switch-type': HTMLRunopencodeSwitchTypeElement
   }
 
   interface ElementTagNameMap {
     'runopencode-choice-type': HTMLRunopencodeChoiceTypeElement;
     'runopencode-date-range-type': HTMLRunopencodeDateRangeTypeElement;
     'runopencode-date-type': HTMLRunopencodeDateTypeElement;
+    'runopencode-switch-type': HTMLRunopencodeSwitchTypeElement;
   }
 
 
