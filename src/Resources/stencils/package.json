@@ -19,8 +19,11 @@
     },
     "dependencies": {
         "choices.js": "^6.0.3",
+        "cropperjs": "^1.5.1",
         "lightpick": "^1.2.11",
-        "moment": "^2.24.0"
+        "moment": "^2.24.0",
+        "rollup-plugin-svg": "^1.0.1",
+        "rollup-plugin-svg-to-jsx": "^1.0.0"
     },
     "devDependencies": {
         "@stencil/core": "~0.16.2",

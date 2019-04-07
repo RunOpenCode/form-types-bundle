@@ -91,6 +91,46 @@ export namespace Components {
     'theme'?: string;
   }
 
+  interface RunopencodeProfilePhotoEditor {
+    /**
+    * Start editing mode on load.
+    */
+    'autostart': boolean;
+    'getValue': () => Promise<string>;
+    /**
+    * Image placeholder if there is no image. If not provided, default will be used.
+    */
+    'placeholder': string;
+    'setValue': (data: string) => Promise<void>;
+    /**
+    * Image source
+    */
+    'src': string;
+    /**
+    * Toolbar configuration.  Allowed items: - crop - move - rotate - rotate-left - rotate-right - flip-horizontal - flip-vertical - apply - cancel - separator  Can be provided as array or as a string, items separated with pipe (|)
+    */
+    'toolbar': string | Array<string>;
+  }
+  interface RunopencodeProfilePhotoEditorAttributes extends StencilHTMLAttributes {
+    /**
+    * Start editing mode on load.
+    */
+    'autostart'?: boolean;
+    'onChange'?: (event: CustomEvent) => void;
+    /**
+    * Image placeholder if there is no image. If not provided, default will be used.
+    */
+    'placeholder'?: string;
+    /**
+    * Image source
+    */
+    'src'?: string;
+    /**
+    * Toolbar configuration.  Allowed items: - crop - move - rotate - rotate-left - rotate-right - flip-horizontal - flip-vertical - apply - cancel - separator  Can be provided as array or as a string, items separated with pipe (|)
+    */
+    'toolbar'?: string | Array<string>;
+  }
+
   interface RunopencodeSwitchType {
     'check': () => Promise<void>;
     'disabled': boolean;
@@ -116,6 +156,7 @@ declare global {
     'RunopencodeChoiceType': Components.RunopencodeChoiceType;
     'RunopencodeDateRangeType': Components.RunopencodeDateRangeType;
     'RunopencodeDateType': Components.RunopencodeDateType;
+    'RunopencodeProfilePhotoEditor': Components.RunopencodeProfilePhotoEditor;
     'RunopencodeSwitchType': Components.RunopencodeSwitchType;
   }
 
@@ -123,6 +164,7 @@ declare global {
     'runopencode-choice-type': Components.RunopencodeChoiceTypeAttributes;
     'runopencode-date-range-type': Components.RunopencodeDateRangeTypeAttributes;
     'runopencode-date-type': Components.RunopencodeDateTypeAttributes;
+    'runopencode-profile-photo-editor': Components.RunopencodeProfilePhotoEditorAttributes;
     'runopencode-switch-type': Components.RunopencodeSwitchTypeAttributes;
   }
 
@@ -145,6 +187,12 @@ declare global {
     new (): HTMLRunopencodeDateTypeElement;
   };
 
+  interface HTMLRunopencodeProfilePhotoEditorElement extends Components.RunopencodeProfilePhotoEditor, HTMLStencilElement {}
+  var HTMLRunopencodeProfilePhotoEditorElement: {
+    prototype: HTMLRunopencodeProfilePhotoEditorElement;
+    new (): HTMLRunopencodeProfilePhotoEditorElement;
+  };
+
   interface HTMLRunopencodeSwitchTypeElement extends Components.RunopencodeSwitchType, HTMLStencilElement {}
   var HTMLRunopencodeSwitchTypeElement: {
     prototype: HTMLRunopencodeSwitchTypeElement;
@@ -155,6 +203,7 @@ declare global {
     'runopencode-choice-type': HTMLRunopencodeChoiceTypeElement
     'runopencode-date-range-type': HTMLRunopencodeDateRangeTypeElement
     'runopencode-date-type': HTMLRunopencodeDateTypeElement
+    'runopencode-profile-photo-editor': HTMLRunopencodeProfilePhotoEditorElement
     'runopencode-switch-type': HTMLRunopencodeSwitchTypeElement
   }
 
@@ -162,6 +211,7 @@ declare global {
     'runopencode-choice-type': HTMLRunopencodeChoiceTypeElement;
     'runopencode-date-range-type': HTMLRunopencodeDateRangeTypeElement;
     'runopencode-date-type': HTMLRunopencodeDateTypeElement;
+    'runopencode-profile-photo-editor': HTMLRunopencodeProfilePhotoEditorElement;
     'runopencode-switch-type': HTMLRunopencodeSwitchTypeElement;
   }
 

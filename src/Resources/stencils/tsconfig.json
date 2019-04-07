@@ -24,6 +24,7 @@
         "node_modules"
     ],
     "files": [
-        "src/typings/moment.d.ts"
+        "src/typings/moment.d.ts",
+        "src/typings/svg.d.ts"
     ]
 }

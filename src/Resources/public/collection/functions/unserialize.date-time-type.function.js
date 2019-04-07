@@ -1,3 +1,6 @@
+/**
+ * Unserialize date/time object from Symfony's selects of Date/DateTime picker
+ */
 export default function unserialize(context, field) {
     field = field ? `[${field}]` : '';
     let yearElement = context.querySelector(`[name$="${field}[year]"]`);

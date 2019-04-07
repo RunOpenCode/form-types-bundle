@@ -222,6 +222,70 @@
       ]
     },
     {
+      "tag": "runopencode-profile-photo-editor",
+      "dependencies": [],
+      "componentClass": "ProfilePhotoEditor",
+      "componentPath": "components/profile-photo-editor/profile-photo-editor.js",
+      "styles": {
+        "$": {
+          "stylePaths": [
+            "components/profile-photo-editor/profile-photo-editor.scss"
+          ]
+        }
+      },
+      "props": [
+        {
+          "name": "autostart",
+          "type": "Boolean",
+          "attr": "autostart"
+        },
+        {
+          "name": "placeholder",
+          "type": "String",
+          "attr": "placeholder"
+        },
+        {
+          "name": "src",
+          "type": "String",
+          "mutable": true,
+          "attr": "src",
+          "watch": [
+            "handleSrcChange"
+          ]
+        },
+        {
+          "name": "toolbar",
+          "type": "String",
+          "attr": "toolbar"
+        }
+      ],
+      "states": [
+        {
+          "name": "_data"
+        },
+        {
+          "name": "_mode"
+        }
+      ],
+      "methods": [
+        {
+          "name": "getValue"
+        },
+        {
+          "name": "setValue"
+        }
+      ],
+      "hostElement": {
+        "name": "_el"
+      },
+      "events": [
+        {
+          "event": "change"
+        }
+      ],
+      "shadow": true
+    },
+    {
       "tag": "runopencode-switch-type",
       "dependencies": [],
       "componentClass": "SwitchType",

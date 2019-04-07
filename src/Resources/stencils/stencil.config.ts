@@ -1,18 +1,18 @@
-import { Config } from '@stencil/core';
-import { sass }   from '@stencil/sass';
+import {Config} from '@stencil/core';
+import {sass} from '@stencil/sass';
 
 export const config: Config = {
-    namespace    : 'runopencode',
+    namespace: 'runopencode',
     outputTargets: [
         {
             type: 'dist',
-            dir : './../public',
+            dir: './../public',
         },
         {
             type: 'docs'
         }
     ],
-    plugins      : [
+    plugins: [
         sass({
             includePaths: [
                 'node_modules'

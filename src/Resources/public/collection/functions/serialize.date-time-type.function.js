@@ -1,3 +1,6 @@
+/**
+ * Serialize date/time object into Symfony's selects of Date/DateTime picker
+ */
 export default function serialize(context, value, field) {
     field = field ? `[${field}]` : '';
     let yearElement = context.querySelector(`[name$="${field}[year]"]`);

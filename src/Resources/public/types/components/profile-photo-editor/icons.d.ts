@@ -1,0 +1,12 @@
+import '../../stencil.core';
+export declare const flipHorizontal: JSX.Element;
+export declare const flipVertical: JSX.Element;
+export declare const apply: JSX.Element;
+export declare const crop: JSX.Element;
+export declare const cancel: JSX.Element;
+export declare const image: JSX.Element;
+export declare const edit: JSX.Element;
+export declare const rotateRight: JSX.Element;
+export declare const rotateLeft: JSX.Element;
+export declare const rotate: JSX.Element;
+export declare const move: JSX.Element;
